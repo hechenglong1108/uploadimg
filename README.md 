@@ -1,0 +1,13 @@
+/*var  a = new UploadFile({
+    clickDom:"#click",//点击上传的按钮
+    filename:"file",//后台接收图片的参数名
+    data:{//参数
+        typeName:"汽车前灯",
+        pid:84,
+        type:"code1527148877462"
+    },
+    url:"/api/shopCarPic/upload",//路径
+    type:"POST"//方式
+},function(json){//回调函数
+    alert(1)
+})*/
