@@ -30,12 +30,38 @@
         this.tCanvas = document.createElement("canvas");
         this.tctx = this.tCanvas.getContext("2d");
         this.maxsize = 100 * 1024;
+        this.name = "";
+        this.shadeId = "shadeId";
         this.init();
     }
 
 
+
+    UploadFile.prototype.shade = function(){
+        var box = document.createElement("div");
+        box.setAttribute("id",this.shadeId);
+        box.style.position = 'fixed';
+        box.style.right = "0";
+        box.style.left = "0";
+        box.style.top = "0";
+        box.style.bottom = "0";
+        box.style.background = 'rgba(0,0,0,0.5)'
+        box.style.display = 'none';
+        var p = document.createElement("p");
+        p.innerHTML = '正在上传...';
+        p.style.color = '#fff';
+        p.style.position = 'absolute';
+        p.style.top = '40%';
+        p.style.textAlign = 'center';
+        p.style.width = '100%';
+        p.style.fontSize = '14px';
+        box.appendChild(p);
+        document.body.appendChild(box);
+    },
+
     UploadFile.prototype.init = function(){
         var _inThis = this;
+        _inThis.shade()
 
 
         _inThis.parentdom.addEventListener("click",function(e){
@@ -43,13 +69,22 @@
         })
 
         this.filechooser.onchange = function(){
-            console.log(this)
+
             if (!this.files.length) return;
             var files = Array.prototype.slice.call(this.files);
             if (files.length > 9) {
                 alert("最多同时只可上传9张图片");
                 return;
             }
+
+            var nameArr = this.value.split('\\');
+            //显示遮罩
+            document.getElementById(_inThis.shadeId).style.display = "block"
+
+
+
+            _inThis.name = nameArr[nameArr.length-1];
+
             files.forEach(function(file, i) {
                 if (!/\/(?:jpeg|png|gif)/i.test(file.type)) return;
                 var reader = new FileReader();
@@ -143,7 +178,9 @@
         var blob = _inThis.getBlob([buffer], type);
         var xhr = new XMLHttpRequest();
         var formdata = _inThis.getFormData();
-        formdata.append(_inThis.filename,blob, Date.now() + '.jpg');
+        console.log(111111)
+
+        formdata.append(_inThis.filename,blob,_inThis.name);
         if(_inThis.data){
             for(var i in _inThis.data){
                 formdata.append(i, _inThis.data[i]);
@@ -152,8 +189,13 @@
 
         xhr.open(_inThis.type, _inThis.url);
         xhr.onreadystatechange = function() {
+            _inThis.filechooser.value = "";
+            //关闭遮罩
+            document.getElementById(_inThis.shadeId).style.display = "none"
+
             if (xhr.readyState == 4 && xhr.status == 200) {
                 var jsonData = JSON.parse(xhr.responseText);
+
                 if(typeof _inThis._callback === "function"){
                     _inThis._callback(jsonData)
                 }
@@ -207,4 +249,3 @@
 },function(json){//回调函数
     alert(1)
 })*/
-
