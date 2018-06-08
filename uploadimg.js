@@ -45,12 +45,11 @@
         box.style.left = "0";
         box.style.top = "0";
         box.style.bottom = "0";
-        box.style.background = 'rgba(0,0,0,0.5)'
+        box.style.background = 'rgba(0,0,0,0.7)'
         box.style.display = 'none';
         var p = document.createElement("p");
         p.innerHTML = '正在上传...';
         p.style.color = '#fff';
-        p.style.position = 'absolute';
         p.style.textAlign = 'center';
         p.style.width = '100%';
         p.style.fontSize = '14px';
@@ -59,7 +58,9 @@
 
         var divs = document.createElement('div');
         divs.style.width = "200px";
-        divs.style.height = "100px";
+        divs.style.height = "200px";
+        divs.style.borderRadius = "10px"
+        divs.style.background = "#7f7f7f";
         divs.style.margin = "40% auto 20px auto"
 
         var can = document.createElement('canvas');
@@ -67,6 +68,7 @@
 
         can.style.margin = "10% auto"
         divs.appendChild(can);
+        divs.appendChild(p);
         box.appendChild(divs);
         var ctx = can.getContext("2d"),
             w = can.width,
@@ -104,7 +106,7 @@
 
 
 
-        box.appendChild(p);
+
         document.body.appendChild(box);
     },
 
