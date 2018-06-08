@@ -31,12 +31,12 @@
         this.tctx = this.tCanvas.getContext("2d");
         this.maxsize = 100 * 1024;
         this.name = "";
-        this.shadeId = "shadeId";
-        this.init();
+        this.shadeId = _config.clickDom.slice(1,_config.clickDom.length-1) + "shadeId";
+            this.init();
     }
 
 
-
+    //绘制遮罩层
     UploadFile.prototype.shade = function(){
         var box = document.createElement("div");
         box.setAttribute("id",this.shadeId);
@@ -51,10 +51,59 @@
         p.innerHTML = '正在上传...';
         p.style.color = '#fff';
         p.style.position = 'absolute';
-        p.style.top = '40%';
         p.style.textAlign = 'center';
         p.style.width = '100%';
         p.style.fontSize = '14px';
+
+        //js画上传动画
+
+        var divs = document.createElement('div');
+        divs.style.width = "200px";
+        divs.style.height = "100px";
+        divs.style.margin = "40% auto 20px auto"
+
+        var can = document.createElement('canvas');
+        can.style.width = "200px";
+
+        can.style.margin = "10% auto"
+        divs.appendChild(can);
+        box.appendChild(divs);
+        var ctx = can.getContext("2d"),
+            w = can.width,
+            h = can.height,
+            x = w/2,
+            y = h/2,
+            radius = 30;
+        ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+        ctx.fillRect(0,0,w,h);
+
+        var r = [3,4,4.5,5,6,7];
+        var angle = [10,25,45,65,90,120];
+        var alpha = [0.25,0.35,0.45,0.65,0.8,1];
+        var x1=[],y1=[];
+
+        setInterval(function(){
+            ctx.fillStyle = "#7f7f7f";
+            ctx.fillRect(0,0,w,h);
+            x1 = [];
+            y1 = [];
+            for(var i = 0; i < r.length; i ++){
+                if(angle[i] >= 360) angle[i] = 0;
+                ctx.beginPath();
+                ctx.font = "1rem sans-serif";
+                ctx.fillStyle = "rgba(156,236,255,"+alpha[i]+")";
+                x1.push( x + radius*Math.cos(angle[i]*Math.PI/180));
+                y1.push( y + radius*Math.sin(angle[i]*Math.PI/180));
+                ctx.arc(x1[i],y1[i],r[i],0,2*Math.PI, true);
+                ctx.closePath();
+                ctx.fill();
+                angle[i] += 5;
+            }
+        },25);
+
+
+
+
         box.appendChild(p);
         document.body.appendChild(box);
     },
