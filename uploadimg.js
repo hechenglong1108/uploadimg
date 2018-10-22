@@ -18,11 +18,11 @@
     //加入跳去APP相册和摄像头的功能和限制只允许上传图片
     input.setAttribute("accept","image/*");
     //android 需要加入capture属性  ios 不需要
-    if (!!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
-        input.removeAttribute("capture");
-    } else {
-        input.setAttribute("capture","camera");
-    }
+    // if (!!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+    //     input.removeAttribute("capture");
+    // } else {
+    //     input.setAttribute("capture","camera");
+    // }
     var inputid = _config.clickDom.slice(1,_config.clickDom.length-1) + "file";
     input.setAttribute("id",inputid);
     this.parentdom = document.querySelector(_config.clickDom);
